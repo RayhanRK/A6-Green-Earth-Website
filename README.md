@@ -25,21 +25,22 @@
                 console.log(add(2,3)); //output: 5
 
 #### 4) How does destructuring assignment work in ES6?
-#### Ans: Destructuring assignment extracts values from arrays/objects and assigns them to variables easily.
+#### Ans: Destructuring assignment extracts values from arrays / objects and assigns them to variables easily.
     - Array destructuring: const [a, b, c] = [1, 2, 3]
     - Object destructuring: const {name, age} = {name: "Rayhan", age: 21}
 
 #### 5) Explain template literals in ES6. How are they different from string concatenation?
 #### Ans: Template Literals (ES6): It is a way to write strings using backticks (`) instead of quotes that use ${} for interpolation, making the code cleaner and easier to read.
 
-** Difference from Concatenation: **
+**Difference from Concatenation:**
 
 - Template literals: cleaner, ${} for variables, multiline supported.
 
 - Concatenation: uses +, harder to read for multiple variables.
 
-- Example: const name = "Rayhan";
+  **Example:** const name = "Rayhan";
                 `Hello, ${name}`   // Template literal
+
                 "Hello, " + name    // Concatenation
 
 
