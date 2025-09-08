@@ -16,7 +16,7 @@ const spinnerLoader = (loadingState) => {
   }
 };
 
-// Load Categories
+// Load All Categories
 const loadAllCategory = async () => {
   const url = "https://openapi.programming-hero.com/api/categories";
   try {
@@ -28,9 +28,10 @@ const loadAllCategory = async () => {
   }
 };
 
+// show All Categories
 const showAllCategory = (categories) => {
   const catList = document.getElementById("categoryList");
-  catList.innerHTML = ""; // clear old
+  catList.innerHTML = ""; 
 
   // append only fetched categories
   categories.forEach((category) => {
@@ -58,10 +59,11 @@ const loadPlantsByCategory = async (id) => {
   }
 };
 
+//Show Plants by Category
 const showPlantsByCategory = (plants, id) => {
   removeActive();
   // highlight active category
-  const activeItem = document.getElementById("all" + id);
+  const activeItem = document.getElementById(`all${id}`);
   if (activeItem) {
     activeItem.classList.add("bg-[#15803d]", "text-white");
   }
@@ -106,6 +108,8 @@ const loadAllPlants = async () => {
   }
 };
 
+
+// show all plants
 const showAllPlants = (plants) => {
   removeActive();
 
@@ -140,7 +144,7 @@ const showAllPlants = (plants) => {
   spinnerLoader(false);
 };
 
-
+// remove active btn functionality
 const removeActive = () => {
   const buttons = document.querySelectorAll("#categoryList li, #allTree");
   buttons.forEach((btn) => btn.classList.remove("bg-[#15803d]", "text-white"));
