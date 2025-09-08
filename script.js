@@ -1,11 +1,5 @@
-
-let cartList = [];
-const cartContainer = document.getElementById("cartContainer");
-const plantCards = document.getElementById("plantCards");
-
 // spinner functionality
 const spinner = document.getElementById("spinnerLoader");
-
 const spinnerLoader = (loadingState) => {
   if (loadingState) {
     spinner.classList.remove("hidden");
@@ -30,7 +24,7 @@ const loadAllCategory = async () => {
 
 // Show All Categories
 const showAllCategory = (categories) => {
-  const catList = document.getElementById("categoryList");
+const catList = document.getElementById("categoryList");
 
   categories.forEach((category) => {
     catList.innerHTML += `
@@ -57,7 +51,7 @@ const url = `https://openapi.programming-hero.com/api/category/${id}`;
 const showPlantsByCategory = (plants, id) => {
   removeActive();
 
-  const activeItem = document.getElementById(`cat-${id}`);
+const activeItem = document.getElementById(`cat-${id}`);
   if (activeItem) {
     activeItem.classList.add("bg-[#15803d]", "text-white");
   }
@@ -97,6 +91,7 @@ const loadAllPlants = async () => {
 };
 
 // Show All Plants
+const plantCards = document.getElementById("plantCards");
 const showAllPlants = (plants) => {
   removeActive();
 
@@ -143,12 +138,13 @@ const showPlantDetail = (plant) => {
   const plantModal = document.getElementById("plantModal");
   const plantDetail = document.getElementById("plantDetail");
   plantModal.showModal();
+
   plantDetail.innerHTML = `
     <h3 class="text-2xl font-semibold">${plant.name}</h3>
-    <img src="${plant.image}" alt="${plant.name}" class="w-full h-60 object-cover rounded-lg">
-    <p class="text-lg font-bold">Category: ${plant.category}</p>
-    <p class="text-lg font-bold">Price: ৳${plant.price}</p>
-    <p> Description: ${plant.description}</p>
+    <img src="${plant.image}" class="w-full h-48 object-cover rounded-xl">
+    <p><strong> Category:</strong> ${plant.category}</p>
+    <p><strong> Price:</strong>  ৳${plant.price}</p>
+    <p><strong> Description:</strong> ${plant.description}</p>
   `;
 };
 
@@ -159,11 +155,13 @@ const addToCart = (e) => {
   if (e.target.innerText === "Add to Cart") {
     const name = e.target.parentNode.parentNode.children[1].children[0].innerText;
     const price = e.target.parentNode.parentNode.children[1].children[2].children[1].innerText.slice(1);
+
     const cartData = {
       plantName: name,
       plantPrice: Number(price),
       quantity: 1,
     };
+
     let existingPlant = cartList.find((cart) => cart.plantName === cartData.plantName);
     if (existingPlant) {
       existingPlant.quantity++;
@@ -176,6 +174,9 @@ const addToCart = (e) => {
 };
 
 // Show cart list
+let cartList = [];
+const cartContainer = document.getElementById("cartContainer");
+
 const showCartList = (cartList) => {
   const totalPriceEl = document.getElementById("totalTk");
   let totalPrice = 0;
