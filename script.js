@@ -1,6 +1,6 @@
-// cart list
+
 let cartList = [];
-const cartDiv = document.getElementById("cartContainer");
+const cartContainer = document.getElementById("cartContainer");
 const plantCards = document.getElementById("plantCards");
 
 // spinner functionality
@@ -9,7 +9,7 @@ const spinner = document.getElementById("spinnerLoader");
 const spinnerLoader = (loadingState) => {
   if (loadingState) {
     spinner.classList.remove("hidden");
-    plantCards.classList.add("hidden"); 
+    plantCards.classList.add("hidden");
   } else {
     spinner.classList.add("hidden");
     plantCards.classList.remove("hidden");
@@ -28,15 +28,14 @@ const loadAllCategory = async () => {
   }
 };
 
-// show All Categories
+// Show All Categories
 const showAllCategory = (categories) => {
   const catList = document.getElementById("categoryList");
-  catList.innerHTML = ""; 
 
-  // append only fetched categories
   categories.forEach((category) => {
     catList.innerHTML += `
-      <li onclick="loadPlantsByCategory('${category.id}')" 
+      <li id="cat-${category.id}"
+          onclick="loadPlantsByCategory('${category.id}')"
           class="px-3 py-2 cursor-pointer rounded duration-300 hover:bg-[#15803d] hover:text-white">
           ${category.category_name}
       </li>
@@ -44,26 +43,21 @@ const showAllCategory = (categories) => {
   });
 };
 
-
 // Load Plants by Category
-const loadPlantsByCategory = async (id) => {
-  spinnerLoader(true);
-  const url = `https://openapi.programming-hero.com/api/category/${id}`;
-  try {
+const loadPlantsByCategory = async(id) => {
+      spinnerLoader(true);
+const url = `https://openapi.programming-hero.com/api/category/${id}`;
+ 
     const res = await fetch(url);
     const data = await res.json();
     showPlantsByCategory(data.plants, id);
-  } catch (error) {
-    console.error("Error fetching category plants:", error);
-    spinnerLoader(false);
   }
-};
 
-//Show Plants by Category
+// Show Plants by Category
 const showPlantsByCategory = (plants, id) => {
   removeActive();
 
-  const activeItem = document.getElementById(`all${id}`);
+  const activeItem = document.getElementById(`cat-${id}`);
   if (activeItem) {
     activeItem.classList.add("bg-[#15803d]", "text-white");
   }
@@ -94,26 +88,18 @@ const showPlantsByCategory = (plants, id) => {
 };
 
 // Load All Plants
-
 const loadAllPlants = async () => {
-  spinnerLoader(true);
-  const url = "https://openapi.programming-hero.com/api/plants";
-  try {
+      spinnerLoader(true);
+    const url = "https://openapi.programming-hero.com/api/plants";
     const res = await fetch(url);
     const data = await res.json();
     showAllPlants(data.plants);
-  } catch (error) {
-    console.error("Error fetching plants:", error);
-    spinnerLoader(false);
-  }
 };
 
-
-// show all plants
+// Show All Plants
 const showAllPlants = (plants) => {
   removeActive();
 
-  // highlight All Trees button
   const allTreeBtn = document.getElementById("allTree");
   if (allTreeBtn) {
     allTreeBtn.classList.add("bg-[#15803d]", "text-white");
@@ -144,91 +130,84 @@ const showAllPlants = (plants) => {
   spinnerLoader(false);
 };
 
-// load plant detail..
+// Load plant detail
+const loadPlantDetail = async (id) => {
+  const url = `https://openapi.programming-hero.com/api/plant/${id}`;
+  const res = await fetch(url);
+  const data = await res.json();
+  showPlantDetail(data.plants);
+};
 
-const loadPlantDetail = async(id) => {
-    const url = `https://openapi.programming-hero.com/api/plant/${id}`;
-    const res = await fetch(url);
-    const data = await res.json();
-    showPlantDetail(data.plants);
-}
-
-// show plant detail
+// Show plant detail
 const showPlantDetail = (plant) => {
-    const plantModal = document.getElementById("plant_modal");
-    const plantDetail = document.getElementById("plant-detail");
-    plantModal.showModal();
-    plantDetail.innerHTML = `
-        <h3 class="text-2xl font-semibold">${plant.name}</h3>
-        <img src="${plant.image}" alt="${plant.name}" class="w-full h-60 object-cover rounded-xl">
-        <p><strong>Category:</strong> ${plant.category}</p>
-        <p><strong>Price:</strong> ৳${plant.price}</p>
-        <p><strong>Description:</strong> ${plant.description}</p>
-    `;
-}
-
-plantCards.addEventListener('click', (e) => addToCart(e));
+  const plantModal = document.getElementById("plantModal");
+  const plantDetail = document.getElementById("plantDetail");
+  plantModal.showModal();
+  plantDetail.innerHTML = `
+    <h3 class="text-2xl font-semibold">${plant.name}</h3>
+    <img src="${plant.image}" alt="${plant.name}" class="w-full h-60 object-cover rounded-xl">
+    <p><strong>Category:</strong> ${plant.category}</p>
+    <p><strong>Price:</strong> ৳${plant.price}</p>
+    <p><strong>Description:</strong> ${plant.description}</p>
+  `;
+};
 
 // Add to cart functionality
+plantCards.addEventListener("click", (e) => addToCart(e));
+
 const addToCart = (e) => {
-    if(e.target.innerText == "Add to Cart"){
-        const name = e.target.parentNode.parentNode.children[1].children[0].innerText;
-        const price = e.target.parentNode.parentNode.children[1].children[2].children[1].innerText.slice(1);
-        const cartData = {
-            plantName: name,
-            plantPrice: Number(price),
-            quantity: 1
-        };
-        let existingPlant = cartList.find(cart => cart.plantName === cartData.plantName);
-        if(existingPlant){
-            existingPlant.quantity++;
-        }
-        else{
-            cartList.push(cartData);
-        }
-        alert(`${name} has been added to the cart.`);
-
-        showCartList(cartList);
+  if (e.target.innerText === "Add to Cart") {
+    const name = e.target.parentNode.parentNode.children[1].children[0].innerText;
+    const price = e.target.parentNode.parentNode.children[1].children[2].children[1].innerText.slice(1);
+    const cartData = {
+      plantName: name,
+      plantPrice: Number(price),
+      quantity: 1,
+    };
+    let existingPlant = cartList.find((cart) => cart.plantName === cartData.plantName);
+    if (existingPlant) {
+      existingPlant.quantity++;
+    } else {
+      cartList.push(cartData);
     }
-}
-
-// show cart list functionality
-const showCartList = (cartList) => {
-    const totalPriceEl = document.getElementById("totalTk");
-    let totalPrice = 0;
-    cartContainer.innerHTML = "";
-    cartList.forEach(cart => {
-        cartContainer.innerHTML += `
-                <div class="bg-[#f0fdf4] p-3 rounded-lg flex justify-between items-center gap-4">
-                    <div>
-                        <h5 class="text-lg font-semibold">${cart.plantName}</h5>
-                        <p class="text-[#889396]">৳${cart.plantPrice} x ${cart.quantity}</p>
-                    </div>
-                    <div class="cursor-pointer" onclick="removeCart('${cart.plantName}')">
-                        ❌
-                    </div>
-                </div>
-            `;
-        totalPrice += cart.plantPrice * cart.quantity;
-    });
-    totalPriceEl.innerText = totalPrice;
-}
-
-
-//remove cart
-
-const removeCart = (plantName) => {
-    const filteredCart = cartList.filter(cart => cart.plantName !== plantName);
-    cartList = filteredCart;
+    alert(`${name} has been added to the cart.`);
     showCartList(cartList);
-}
+  }
+};
 
-// remove active btn functionality
+// Show cart list
+const showCartList = (cartList) => {
+  const totalPriceEl = document.getElementById("totalTk");
+  let totalPrice = 0;
+  cartContainer.innerHTML = "";
+  cartList.forEach((cart) => {
+    cartContainer.innerHTML += `
+      <div class="bg-[#f0fdf4] p-3 rounded-lg flex justify-between items-center gap-4">
+        <div>
+          <h5 class="text-lg font-semibold">${cart.plantName}</h5>
+          <p class="text-[#889396]">৳${cart.plantPrice} x ${cart.quantity}</p>
+        </div>
+        <div class="cursor-pointer" onclick="removeCart('${cart.plantName}')">
+         ❌
+        </div>
+      </div>
+    `;
+    totalPrice += cart.plantPrice * cart.quantity;
+  });
+  totalPriceEl.innerText = totalPrice;
+};
+
+// Remove cart
+const removeCart = (plantName) => {
+  cartList = cartList.filter((cart) => cart.plantName !== plantName);
+  showCartList(cartList);
+};
+
+// Remove active button styling
 const removeActive = () => {
   const buttons = document.querySelectorAll("#categoryList li, #allTree");
   buttons.forEach((btn) => btn.classList.remove("bg-[#15803d]", "text-white"));
 };
-
 
 loadAllCategory();
 loadAllPlants();
