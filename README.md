@@ -1,8 +1,7 @@
 ## ✅ Answer of the following questions-
 
-
 #### 1) What is the difference between var, let, and const?
-### Ans: 
+#### Ans: 
 - var → It is old java script.Its variables are function-scoped, 
         can be re-declared, hoisted with undefined.
 
@@ -11,7 +10,7 @@
 - const → block-scoped, cannot be reassigned or re-declared.
 
 #### 2) What is the difference between map(), forEach(), and filter()? 
-### Ans: 
+#### Ans: 
 - map() → It goes through each item and returns a new array with transformed values.
 
 - forEach() → It goes through each item but doesn’t return anything.It is used just to run code for each element.
@@ -39,13 +38,10 @@
 - Concatenation: uses +, harder to read for multiple variables.
 
   **Example:** const name = "Rayhan";
-                `Hello, ${name}`   // Template literal
-
-                "Hello, " + name    // Concatenation
+             `Hello, ${name}`   // Template literal
+             "Hello, " + name    // Concatenation
 
 
 ## 🔗 Submission
-- **Live Link :** YOUR_DEPLOYED_URL_HERE  
+ **Live Link (Netlify) :** https://a6-green-earth-website.netlify.app/
 
-
----
