@@ -62,7 +62,7 @@ const loadPlantsByCategory = async (id) => {
 //Show Plants by Category
 const showPlantsByCategory = (plants, id) => {
   removeActive();
-  // highlight active category
+
   const activeItem = document.getElementById(`all${id}`);
   if (activeItem) {
     activeItem.classList.add("bg-[#15803d]", "text-white");
@@ -143,6 +143,85 @@ const showAllPlants = (plants) => {
   });
   spinnerLoader(false);
 };
+
+// load plant detail..
+
+const loadPlantDetail = async(id) => {
+    const url = `https://openapi.programming-hero.com/api/plant/${id}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    showPlantDetail(data.plants);
+}
+
+// show plant detail
+const showPlantDetail = (plant) => {
+    const plantModal = document.getElementById("plant_modal");
+    const plantDetail = document.getElementById("plant-detail");
+    plantModal.showModal();
+    plantDetail.innerHTML = `
+        <h3 class="text-2xl font-semibold">${plant.name}</h3>
+        <img src="${plant.image}" alt="${plant.name}" class="w-full h-60 object-cover rounded-xl">
+        <p><strong>Category:</strong> ${plant.category}</p>
+        <p><strong>Price:</strong> ৳${plant.price}</p>
+        <p><strong>Description:</strong> ${plant.description}</p>
+    `;
+}
+
+plantCards.addEventListener('click', (e) => addToCart(e));
+
+// Add to cart functionality
+const addToCart = (e) => {
+    if(e.target.innerText == "Add to Cart"){
+        const name = e.target.parentNode.parentNode.children[1].children[0].innerText;
+        const price = e.target.parentNode.parentNode.children[1].children[2].children[1].innerText.slice(1);
+        const cartData = {
+            plantName: name,
+            plantPrice: Number(price),
+            quantity: 1
+        };
+        let existingPlant = cartList.find(cart => cart.plantName === cartData.plantName);
+        if(existingPlant){
+            existingPlant.quantity++;
+        }
+        else{
+            cartList.push(cartData);
+        }
+        alert(`${name} has been added to the cart.`);
+
+        showCartList(cartList);
+    }
+}
+
+// show cart list functionality
+const showCartList = (cartList) => {
+    const totalPriceEl = document.getElementById("totalTk");
+    let totalPrice = 0;
+    cartContainer.innerHTML = "";
+    cartList.forEach(cart => {
+        cartContainer.innerHTML += `
+                <div class="bg-[#f0fdf4] p-3 rounded-lg flex justify-between items-center gap-4">
+                    <div>
+                        <h5 class="text-lg font-semibold">${cart.plantName}</h5>
+                        <p class="text-[#889396]">৳${cart.plantPrice} x ${cart.quantity}</p>
+                    </div>
+                    <div class="cursor-pointer" onclick="removeCart('${cart.plantName}')">
+                        ❌
+                    </div>
+                </div>
+            `;
+        totalPrice += cart.plantPrice * cart.quantity;
+    });
+    totalPriceEl.innerText = totalPrice;
+}
+
+
+//remove cart
+
+const removeCart = (plantName) => {
+    const filteredCart = cartList.filter(cart => cart.plantName !== plantName);
+    cartList = filteredCart;
+    showCartList(cartList);
+}
 
 // remove active btn functionality
 const removeActive = () => {
