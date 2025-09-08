@@ -145,10 +145,10 @@ const showPlantDetail = (plant) => {
   plantModal.showModal();
   plantDetail.innerHTML = `
     <h3 class="text-2xl font-semibold">${plant.name}</h3>
-    <img src="${plant.image}" alt="${plant.name}" class="w-full h-60 object-cover rounded-xl">
-    <p><strong>Category:</strong> ${plant.category}</p>
-    <p><strong>Price:</strong> ৳${plant.price}</p>
-    <p><strong>Description:</strong> ${plant.description}</p>
+    <img src="${plant.image}" alt="${plant.name}" class="w-full h-60 object-cover rounded-lg">
+    <p class="text-lg font-bold">Category: ${plant.category}</p>
+    <p class="text-lg font-bold">Price: ৳${plant.price}</p>
+    <p> Description: ${plant.description}</p>
   `;
 };
 
